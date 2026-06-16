@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <style>
+    /* ─── Tokens ─────────────────────────────────────────── */
+    :root {
+      --bg:        #0d0d0f;
+      --surface:   #141417;
+      --panel:     #1a1a1f;
+      --border:    rgba(255,255,255,0.07);
+      --accent:    #7c6ef5;
+      --accent2:   #c46ef5;
+      --text:      #e8e6f0;
+      --muted:     #7a7888;
+      --tag-bg:    rgba(124,110,245,0.12);
+      --font-display: 'Syne', sans-serif;
+      --font-body:    'Space Grotesk', sans-serif;
+      --font-mono:    'Space Mono', monospace;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      font-size: 16px;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    html {
+      zoom: 80%; /* Sets the page to load at 100% zoom by default */
+    }
+
+    * {
+      user-select: none;
+    }
+
+    /* ─── Scrollbar ──────────────────────────────────────── */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+    /* ─── Nav ────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; gap: 2rem;
+      padding: 1.2rem 3rem;
+      background: rgba(13,13,15,0.7);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-home {
+      width: 36px; height: 36px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: grid; place-items: center;
+      cursor: pointer;
+      transition: border-color .2s;
+      text-decoration: none;
+    }
+    .nav-home:hover { border-color: var(--accent); }
+    .nav-home svg { width: 16px; height: 16px; fill: var(--text); }
+    nav a {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      transition: color .2s;
+    }
+    nav a:hover, nav a.active { color: var(--text); }
+    .nav-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--accent);
+      opacity: .6;
+    }
+
+    /* ─── Hero ───────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 0 3rem 5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    /* .hero-noise {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 40%, rgba(124,110,245,.12) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 20% 80%, rgba(196,110,245,.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(var(--border) 1px, transparent 1px),
+        linear-gradient(90deg, var(--border) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,.3) 40%, transparent 100%);
+      pointer-events: none;
+    } */
+    .hero-name {
+      /* font-family: var(--font-display); */
+      font-size: clamp(3.5rem, 9vw, 8rem);
+      font-weight: 800;
+      line-height: .95;
+      letter-spacing: -.03em;
+      position: relative;
+      background: linear-gradient(135deg, #fff 30%, var(--accent) 60%, var(--accent2) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero-subtitle {
+      font-family: var(--font-mono);
+      font-size: .78rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 1.2rem 0 2.5rem;
+    }
+    .hero-subtitle span { color: var(--accent); }
+    .hero-links {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .65rem 1.4rem;
+      border-radius: 6px;
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all .2s;
+      text-decoration: none;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #fff;
+      border: 1px solid var(--accent);
+    }
+    .btn-primary:hover { background: var(--accent2); border-color: var(--accent2); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+    /* .hero-scroll {
+      position: absolute; bottom: 2.5rem; right: 3rem;
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      writing-mode: vertical-rl;
+      display: flex; align-items: center; gap: .5rem;
+    } */
+    .hero-scroll::after {
+      content: '';
+      display: block;
+      width: 1px; height: 40px;
+      background: linear-gradient(to bottom, var(--muted), transparent);
+    }
+
+    /* ─── Section shell ──────────────────────────────────── */
+    section {
+      padding: 7rem 3rem;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .8rem;
+    }
+    .section-title {
+      /* font-family: var(--font-display); */
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 700;
+      line-height: 1.1;
+      margin-bottom: 1rem;
+    }
+    .section-desc {
+      color: var(--muted);
+      max-width: 520px;
+      margin-bottom: 3.5rem;
+      font-size: .95rem;
+    }
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 0 3rem;
+    }
+
+    /* ─── Portfolio cards ────────────────────────────────── */
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+      gap: 1.5rem;
+    }
+    .portfolio-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color .25s, transform .25s;
+      position: relative;
+    }
+    .portfolio-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-4px);
+    }
+    .card-media {
+      position: relative;
+      overflow: hidden;
+      background: var(--panel);
+    }
+    .card-media img {
+      width: 100%; height: 100%;
+      display: block;
+      object-fit: contain;
+      transition: transform .4s ease, filter .4s ease;
+      /* filter: brightness(.85) saturate(.9); */
+    }
+    .card-media video,
+    .pm-main-img video,
+    .pm-thumb video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+    }
+    .portfolio-card:hover .card-media img {
+      transform: scale(1.04);
+      filter: brightness(.95) saturate(1.05);
+    }
+    .card-media-placeholder {
+      width: 100%; height: 100%;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted);
+      font-size: .8rem;
+      font-family: var(--font-mono);
+    }
+    .card-gallery-strip {
+      position: absolute; bottom: .6rem; right: .6rem;
+      display: flex; gap: .3rem;
+    }
+    .card-thumb {
+      width: 36px; height: 28px;
+      border-radius: 4px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,.2);
+    }
+    .card-thumb img { width: 100%; height: 100%; object-fit: cover; }
+    .card-count {
+      position: absolute; top: .75rem; left: .75rem;
+      background: rgba(13,13,15,.7);
+      backdrop-filter: blur(6px);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: .2rem .5rem;
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      color: var(--muted);
+    }
+    .card-body {
+      padding: 1.2rem 1.4rem 1.4rem;
+    }
+    .card-category {
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .4rem;
+    }
+    .card-title {
+      /* font-family: var(--font-display); */
+      font-size: 1.2rem;
+      font-weight: 700;
+      margin-bottom: .5rem;
+    }
+    .card-desc {
+      font-size: .85rem;
+      color: var(--muted);
+      line-height: 1.55;
+      margin-bottom: 1rem;
+    }
+    .card-tags {
+      display: flex; flex-wrap: wrap; gap: .4rem;
+    }
+    .tag {
+      background: var(--tag-bg);
+      color: var(--accent);
+      border: 1px solid rgba(124,110,245,.2);
+      border-radius: 4px;
+      padding: .15rem .55rem;
+      font-family: var(--font-mono);
+      font-size: .65rem;
+      letter-spacing: .05em;
+    }
+
+    /* ─── Gallery grid ───────────────────────────────────── */
+    .gallery-grid {
+      columns: 3;
+      column-gap: 1rem;
+    }
+    @media (max-width: 900px) { .gallery-grid { columns: 2; } }
+    @media (max-width: 560px) { .gallery-grid { columns: 1; } }
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 1rem;
+      position: relative;
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      border: 1px solid var(--border);
+      transition: border-color .2s;
+    }
+    .gallery-item:hover { border-color: var(--accent); }
+    .gallery-item img,
+    .gallery-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .gallery-item:hover img,
+    .gallery-item:hover video {
+      filter: brightness(.95) saturate(1);
+      transform: scale(1.02);
+    }
+    .gallery-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(13,13,15,.85) 0%, transparent 55%);
+      opacity: 0;
+      transition: opacity .3s;
+      display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 1rem;
+    }
+    .gallery-item:hover .gallery-overlay { opacity: 1; }
+    .gallery-overlay-title {
+      /* font-family: var(--font-display); */
+      font-size: .95rem;
+      font-weight: 600;
+      margin-bottom: .2rem;
+    }
+    .gallery-overlay-desc {
+      font-size: .75rem;
+      color: var(--muted);
+      line-height: 1.4;
+    }
+    .gallery-placeholder {
+      background: var(--surface);
+      aspect-ratio: 4/3;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--muted);
+      font-size: .8rem;
+      font-family: var(--font-mono);
+    }
+
+    /* ─── Lightbox (gallery) ─────────────────────────────── */
+    #lightbox {
+      display: none;
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(7,7,9,.92);
+      backdrop-filter: blur(12px);
+      align-items: center; justify-content: center;
+      padding: 2rem;
+    }
+    #lightbox.open { display: flex; }
+    .lb-wrap {
+      position: relative;
+      max-width: 860px; width: 100%;
+      animation: lbIn .22s ease;
+    }
+    @keyframes lbIn {
+      from { opacity: 0; transform: scale(.97); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    .lb-img-wrap {
+      border-radius: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .lb-img-wrap img,
+    .lb-img-wrap video {
+      max-width: 100%;
+      max-height: 70vh;
+      object-fit: contain;
+      display: block;
+      margin: 0 auto;
+      background: var(--surface);
+    }
+    .lb-meta {
+      padding: 1.5rem 0 .5rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .lb-title {
+      /* font-family: var(--font-display); */
+      font-size: 1.3rem;
+      font-weight: 700;
+    }
+    .lb-date {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      color: var(--muted);
+      margin-top: .25rem;
+    }
+    .lb-desc {
+      text-align: center;
+      max-width: 700px;
+      margin: .5rem auto 0;
+      font-size: .88rem;
+      color: var(--muted);
+      margin-top: .3rem;
+      max-width: 600px;
+    }
+    .lb-close {
+      position: absolute; top: -2.8rem; right: 0;
+      width: 32px; height: 32px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: grid; place-items: center;
+      cursor: pointer;
+      color: var(--text);
+      font-size: 1rem;
+      transition: border-color .2s;
+    }
+    .lb-close:hover { border-color: var(--accent); }
+
+    /* ─── Portfolio modal ────────────────────────────────── */
+    #portfolio-modal {
+      display: none;
+      position: fixed; inset: 0; z-index: 200;
+      background: rgba(7,7,9,.92);
+      backdrop-filter: blur(14px);
+      overflow-y: auto;
+      padding: 2rem;
+    }
+    #portfolio-modal.open { display: block; }
+    .pm-inner {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 3rem 0;
+      animation: lbIn .22s ease;
+    }
+    .pm-header {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      margin-bottom: 2.5rem;
+    }
+    .pm-category {
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .5rem;
+    }
+    .pm-title {
+      /* font-family: var(--font-display); */
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 800;
+    }
+    .pm-close {
+      width: 36px; height: 36px; flex-shrink: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      display: grid; place-items: center;
+      cursor: pointer;
+      color: var(--text);
+      transition: border-color .2s;
+      font-size: 1rem;
+      margin-left: 1.5rem;
+    }
+    .pm-close:hover { border-color: var(--accent); }
+    .pm-main-img {
+      width: 100%;
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin-bottom: 1.5rem;
+      background: var(--surface);
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 1rem;
+    }
+
+    .pm-main-img img,
+    .pm-main-img video
+    {
+      max-width: 100%;
+      max-height: 75vh;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    .pm-nav {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: rgba(13,13,15,.85);
+      backdrop-filter: blur(8px);
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      z-index: 5;
+      transition: .2s;
+    }
+
+    .pm-nav:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .pm-prev {
+      left: 1rem;
+    }
+
+    .pm-next {
+      right: 1rem;
+    }
+
+    .pm-media-wrapper {
+      position: relative;
+      min-height: 75vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pm-nav.hidden {
+      display: none;
+    }
+    .pm-thumbs {
+      display: flex; gap: .75rem; flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .pm-thumb {
+      width: 100px; height: 70px;
+      border-radius: 6px; overflow: hidden;
+      border: 1px solid var(--border);
+      cursor: pointer;
+      transition: border-color .2s;
+      flex-shrink: 0;
+      background: var(--panel);
+      position: relative;
+    }
+    .pm-thumb.active { border-color: var(--accent); }
+    .pm-thumb-badge {
+      position: absolute;
+      bottom: 3px;
+      right: 3px;
+      width: 16px;
+      height: 16px;
+      border-radius: 3px;
+      background: rgba(13,13,15,.75);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      pointer-events: none;
+    }
+    .pm-thumb-badge svg {
+      width: 9px;
+      height: 9px;
+      fill: #fff;
+      flex-shrink: 0;
+    }
+    .pm-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: var(--panel);
+    }
+    .pm-desc {
+      color: var(--muted);
+      line-height: 1.7;
+      font-size: .95rem;
+      margin-bottom: 1.5rem;
+      max-width: 700px;
+    }
+    .pm-tags { display: flex; flex-wrap: wrap; gap: .5rem; }
+
+    /* ─── About strip ────────────────────────────────────── */
+    #about {
+      padding: 7rem 3rem;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    @media (max-width: 700px) { .about-grid { grid-template-columns: 1fr; gap: 2.5rem; } }
+    .about-skills {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: .75rem;
+      margin-top: 2rem;
+    }
+    .skill-item {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: .8rem 1rem;
+    }
+    .skill-name {
+      font-family: var(--font-mono);
+      font-size: .75rem;
+      color: var(--text);
+      margin-bottom: .4rem;
+    }
+    .skill-bar-bg {
+      height: 3px;
+      background: var(--border);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .skill-bar-fill {
+      height: 100%;
+      border-radius: 2px;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+
+    /* ─── Footer ─────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 2.5rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      flex-wrap: wrap; gap: 1rem;
+      font-family: var(--font-mono);
+      font-size: .7rem;
+      color: var(--muted);
+    }
+    footer a { color: var(--muted); text-decoration: none; transition: color .2s; }
+    footer a:hover { color: var(--accent); }
+
+    /* ─── Responsive ─────────────────────────────────────── */
+    @media (max-width: 700px) {
+      nav { padding: 1rem 1.5rem; }
+      #hero { padding: 0 1.5rem 4rem; }
+      section, #about { padding: 5rem 1.5rem; }
+      .divider { margin: 0 1.5rem; }
+      footer { padding: 2rem 1.5rem; }
+      .portfolio-grid { grid-template-columns: 1fr; }
+    }
+
+    /* ─── Reduced motion ─────────────────────────────────── */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Nav ──────────────────────────────────────────────── -->
+<nav id="nav">
+  <a href="#hero" class="nav-home" aria-label="Inicio">
+    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/>
+    </svg>
+  </a>
+  <span class="nav-dot"></span>
+  <a href="#portfolio" class="active">Portafolio</a>
+  <a href="#gallery">Galería</a>
+  <a href="#about">Sobre mí</a>
+</nav>
+
+<!-- ── Hero ─────────────────────────────────────────────── -->
+<section id="hero">
+  <div class="hero-noise"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-name" id="hero-name">tu nombre</div>
+  <p class="hero-subtitle">
+    Modelos 3D &nbsp;<span>·</span>&nbsp; Pixel Art &nbsp;<span>·</span>&nbsp; Config &amp; Traducción
+  </p>
+  <div class="hero-links">
+    <a href="#portfolio" class="btn btn-primary">Ver portafolio</a>
+    <a href="#gallery" class="btn btn-ghost">Galería</a>
+    <a href="#about" class="btn btn-ghost">Sobre Mí</a>
+  </div>
+  <!-- <span class="hero-scroll">Scroll</span> -->
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Portfolio ────────────────────────────────────────── -->
+<section id="portfolio">
+  <p class="section-label">Trabajos</p>
+  <h2 class="section-title">Portafolio</h2>
+  <p class="section-desc">Una selección de proyectos de modelos 3D, pixel art, configuración y traducción.</p>
+
+  <div class="portfolio-grid" id="portfolio-grid">
+    <!-- Cards se insertan desde JS -->
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── Gallery ──────────────────────────────────────────── -->
+<section id="gallery">
+  <p class="section-label">Capturas</p>
+  <h2 class="section-title">Galería</h2>
+  <p class="section-desc">Imágenes sueltas, experimentos visuales y momentos destacados.</p>
+  <div class="gallery-grid" id="gallery-grid"></div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ── About ────────────────────────────────────────────── -->
+<div id="about">
+  <div class="about-grid">
+    <div>
+      <p class="section-label">Sobre mí</p>
+      <h2 class="section-title">Quién soy</h2>
+      <p style="color:var(--muted); font-size:.95rem; line-height:1.7; margin-bottom:1rem;">
+        Aquí puedes escribir una pequeña bio. Cuéntale a quien visite tu portafolio quién eres,
+        cuáles son tus intereses, cómo empezaste y qué tipo de proyectos disfrutas crear.
+      </p>
+      <p style="color:var(--muted); font-size:.95rem; line-height:1.7;">
+        Apasionado/a por el mundo 3D, el pixel art y los proyectos creativos colaborativos.
+      </p>
+    </div>
+    <div>
+      <p class="section-label" style="margin-bottom:1.2rem;">Habilidades</p>
+      <div class="about-skills" id="skills-grid"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ── Footer ───────────────────────────────────────────── -->
+<footer>
+  <span>© 2026 tu nombre</span>
+  <div style="display:flex;gap:1.5rem;">
+    <a href="#">GitHub</a>
+    <a href="#">Twitter</a>
+    <a href="#">Contacto</a>
+  </div>
+</footer>
+
+<!-- ── Portfolio modal ───────────────────────────────────── -->
+<div id="portfolio-modal" role="dialog" aria-modal="true">
+  <div class="pm-inner">
+    <div class="pm-header">
+      <div>
+        <p class="pm-category" id="pm-cat"></p>
+        <h2 class="pm-title" id="pm-title"></h2>
+      </div>
+      <button class="pm-close" id="pm-close" aria-label="Cerrar">✕</button>
+    </div>
+    <div class="pm-media-wrapper">
+      <button class="pm-nav pm-prev hidden" id="pm-prev">❮</button>
+      <div class="pm-main-img" id="pm-main-media"></div>
+      <button class="pm-nav pm-next hidden" id="pm-next">❯</button>
+    </div>
+    <div class="pm-thumbs" id="pm-thumbs"></div>
+    <p class="pm-desc" id="pm-desc"></p>
+    <div class="pm-tags" id="pm-tags"></div>
+  </div>
+</div>
+
+<!-- ── Lightbox (gallery) ────────────────────────────────── -->
+<div id="lightbox" role="dialog" aria-modal="true">
+  <div class="lb-wrap">
+    <button class="lb-close" id="lb-close" aria-label="Cerrar">✕</button>
+    <div class="lb-img-wrap" id="lb-media-wrap">
+      <img id="lb-img" src="" alt="" />
+    </div>
+    <div class="lb-meta">
+      <div>
+        <div class="lb-title" id="lb-title"></div>
+        <div class="lb-date" id="lb-date"></div>
+        <div class="lb-desc" id="lb-desc"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ╔══════════════════════════════════════════════════════╗
+// ║  DATOS — Edita esto con tu información real          ║
+// ╚══════════════════════════════════════════════════════╝
+
+/* ── Tu nombre (aparece en el hero y el footer) ──────── */
+const SITE_NAME = "PanBimboX";
+
+/* ── Habilidades ─────────────────────────────────────── */
+const SKILLS = [
+  { name: "Modelado 3D", level: 90 },
+  { name: "Pixel Art",   level: 85 },
+  { name: "Rigging",     level: 75 },
+  { name: "Blender",     level: 80 },
+  { name: "Traducción",  level: 95 },
+  { name: "Localización",level: 88 },
+];
+
+/* ── Portfolio ───────────────────────────────────────── */
+/*
+  Cada entrada tiene:
+    title      : Nombre del proyecto
+    category   : Tipo ("Modelo 3D" | "Pixel Art" | "Configuración" | "Traducción" | ...)
+    desc       : Descripción corta para la tarjeta
+    fullDesc   : Descripción larga para el modal
+    tags       : Array de etiquetas
+    images     : Array de URLs de imagen (primera = portada)
+                 Para usar tus propias imágenes, ponlas junto al index.html
+                 y escribe la ruta relativa, p.ej. "images/mi-proyecto/foto1.jpg"
+*/
+const PORTFOLIO = [
+  {
+    title: "Projecto - Souleaf",
+    category: "Servidores",
+    desc: "Servidor Survival Custom utilizando ItemsAdder",
+    fullDesc: "Descripción detallada del proyecto: proceso de modelado, herramientas usadas, retos superados y resultado final. Puedes escribir varios párrafos aquí para explicar tu trabajo en profundidad.",
+    tags: ["Blender", "VRM", "Anime", "Rigging"],
+    images: [
+      "img/ka4IfkA.png",
+      "img/7APllZn.mp4",
+      "img/iEzNK1g.png",
+      "img/JnCIOGW.png",
+      "img/POBxQU5.png",
+      "img/Ht0ZDKn.png",
+      "img/wjIKQUJ.png",
+      "img/sMz00mR.png",
+      "img/1fZa9sn.jpeg",
+    ]
+  },
+  {
+    title: "Projecto - Hykari Network",
+    category: "Servidores",
+    desc: "Tileset de 16×16 para RPG con bioma de bosque oscuro, 64 tiles únicos.",
+    fullDesc: "Proceso de creación del tileset: paleta de colores, lógica de conexión entre tiles, variantes de animación. Se usó Aseprite y se entregó en formato PNG + Tiled-compatible.",
+    tags: ["Aseprite", "Tileset", "RPG", "16×16"],
+    images: [
+      "img/hykari_portada.jpg",
+      "https://placehold.co/900x560/141417/f56e6e?text=Pixel+Art+2",
+    ]
+  },
+  {
+    title: "Projecto - Vulturehub Network",
+    category: "Servidores",
+    desc: "Tileset de 16×16 para RPG con bioma de bosque oscuro, 64 tiles únicos.",
+    fullDesc: "Proceso de creación del tileset: paleta de colores, lógica de conexión entre tiles, variantes de animación. Se usó Aseprite y se entregó en formato PNG + Tiled-compatible.",
+    tags: ["Aseprite", "Tileset", "RPG", "16×16"],
+    images: [
+      "img/LX2yWJ4.png",
+      "img/17RazpE.mp4",
+      "img/9kJJjGi.mp4",
+      "img/DddCWil.png",
+      "img/JjrmRIT.png",
+      "img/LX2yWJ4.png",
+      "img/fV4HjVG.png",
+    ]
+  },
+  {
+    title: "Projecto - ValkyCraft Network",
+    category: "Servidores",
+    desc: "Tileset de 16×16 para RPG con bioma de bosque oscuro, 64 tiles únicos.",
+    fullDesc: "Proceso de creación del tileset: paleta de colores, lógica de conexión entre tiles, variantes de animación. Se usó Aseprite y se entregó en formato PNG + Tiled-compatible.",
+    tags: ["Aseprite", "Tileset", "RPG", "16×16"],
+    images: [
+      "img/0r5ujo0r.jpg",
+      "img/2215Si.png",
+      "img/2215156BA.png",
+      "img/221615Be.png",
+      "img/2022Panti.png",
+      "img/backpack2220.png",
+      "img/ranks220215.png",
+      "img/2224InKset.png",
+      "img/2024-03-30_11-01-47.mp4",
+      "img/2024-03-15_23-51-19.mp4",
+      "img/ABVjd6k.mp4",
+      "img/wpubFkI.mp4",
+      "img/xgvMo6H.mp4",
+      "img/XyxkLZu.mp4",
+      "img/2024-04-05_16-51-16.mp4",
+    ]
+  },
+  {
+    title: "Projecto - SpiritMC Network",
+    category: "Configuración",
+    desc: "Setup de servidor de VRChat con bots, permisos, integraciones y documentación.",
+    fullDesc: "Descripción de la configuración: Discord, bots integrados, flujo de permisos, integraciones con Patreon y documentación para los moderadores.",
+    tags: ["Discord", "Bot", "VRChat", "Admin"],
+    images: [
+      "img/icon_spirit.png",
+    ]
+  },
+  {
+    title: "Ejemplo — Traducción de juego",
+    category: "Traducción",
+    desc: "Localización ES/LA de un juego indie con 12 000 palabras y revisión de terminología.",
+    fullDesc: "Detalles sobre el proceso de localización: glosario, herramientas usadas (POEdit, Google Sheets), control de calidad y pruebas en el juego final.",
+    tags: ["Español", "Localización", "Control de calidad"],
+    images: [
+      "https://placehold.co/900x560/141417/6ef57c?text=Traducción",
+    ]
+  },
+];
+
+/* ── Galería ─────────────────────────────────────────── */
+/*
+  Cada entrada tiene:
+    title  : Título
+    date   : Fecha (string libre)
+    desc   : Descripción que aparece en el lightbox
+    src    : URL de la imagen
+*/
+const GALLERY = [
+  { title: "Floating Breath", date: "Abr 24, 2026", desc: "Una escena underwater con postproceso azulado.", src: "img/7vbAYkZ.png" },
+  { title: "Sketchy Ally",    date: "Abr 11, 2026", desc: "Reunión en un mundo urbano de VRChat.",           src: "img/XqiXRE5.png" },
+  { title: "4 postprocess",   date: "Mar 16, 2026", desc: "Experimento con cuatro capas de postproceso.",    src: "img/1lErdNN.png" },
+  { title: "_NODEONE",        date: "Mar 9, 2026",  desc: "Exploración de mundos de noche.",                 src: "img/3Bya62H.png" },
+  { title: "Spanish Community",date:"Mar 6, 2026",  desc: "Comunidad hispanohablante en evento especial.",   src: "img/FPnDmqQ.png" },
+  { title: "_REALITY",        date: "Feb 21, 2026", desc: "Contraste entre avatar y entorno realista.",      src: "img/KxCn4Ea.png" },
+  { title: "_galerry",        date: "Feb 22, 2026", desc: "Contraste entre avatar y entorno realista.",      src: "img/x0xaQvj.mp4" },
+  { title: "hykariList",        date: "Feb 22, 2026", desc: "Contraste entre avatar y entorno realista.",      src: "img/aiyLHIE.png"},
+  { title: "gesturesSouleaf",        date: "Feb 22, 2026", desc: "Contraste entre avatar y entorno realista.",      src: "img/7APllZn.mp4"},
+  { title: "logoSouleaf",        date: "Feb 22, 2026", desc: "Contraste entre avatar y entorno realista.",      src: "img/A4ZXkhe.png"},
+  { title: "Warps ValkyCraft",        date: "Feb 22, 2026", desc: "Contraste entre avatar y entorno realista.",      src: "img/XyxkLZu.mp4"},
+  { title: "Menú de Pintar",        date: "Feb 22, 2026", desc: "Menú de pintar para el projecto Genkiru.",      src: "img/xC9e9aH.gif"},
+  { title: "Arma con Manos",        date: "Feb 22, 2026", desc: "Menú de pintar para el projecto Genkiru.",      src: "img/LjClZFl.mp4"},
+  { title: "Show Items",        date: "Feb 22, 2026", desc: "Menú de pintar para el projecto Genkiru.",      src: "img/zXC9QK3.mp4"},
+  { title: "Menu Pstone",        date: "Feb 22, 2026", desc: "Menú de pintar para el projecto Genkiru.",      src: "img/jnd2ycG.mp4"},
+  { title: "Traducción MobsLibrary",        date: "Feb 22, 2026", desc: "Menú de pintar para el projecto Genkiru.",      src: "img/DzNOqgV.mp4"},
+  { title: "Shopping Souleaf",        date: "Feb 22, 2026", desc: "Menú de pintar para el projecto Genkiru.",      src: "img/xZY4X6c.png"},
+];
+
+// ╔══════════════════════════════════════════════════════╗
+// ║  RENDER                                              ║
+// ╚══════════════════════════════════════════════════════╝
+
+document.querySelectorAll('#hero-name, footer span')[0].textContent = SITE_NAME;
+document.querySelector('footer span').textContent = `© 2026 ${SITE_NAME}`;
+document.title = `Portfolio · ${SITE_NAME}`;
+
+/* Skills */
+const sg = document.getElementById('skills-grid');
+SKILLS.forEach(s => {
+  sg.innerHTML += `
+    <div class="skill-item">
+      <div class="skill-name">${s.name}</div>
+      <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:${s.level}%"></div></div>
+    </div>`;
+});
+
+/* Portfolio cards */
+const pg = document.getElementById('portfolio-grid');
+PORTFOLIO.forEach((p, i) => {
+  // const img = p.images[0];
+  const media = p.images[0];
+  const isVideo = media.match(/\.(mp4|webm|ogg)$/i);
+  const thumbsHTML = p.images.slice(1, 4).map(url => {
+    const isVideo = url.match(/\.(mp4|webm|ogg)$/i);
+
+    return `
+      <div class="card-thumb">
+        ${
+          isVideo
+            ? `<video muted playsinline preload="metadata">
+  <source src="${url}" type="video/mp4">
+</video>`
+            : `<img src="${url}" alt="" loading="lazy"/>`
+        }
+      </div>
+    `;
+  }).join('');
+  pg.innerHTML += `
+    <div class="portfolio-card" data-idx="${i}" tabindex="0" role="button" aria-label="Abrir ${p.title}">
+      <div class="card-media">
+        ${
+          isVideo
+            ? `<video autoplay muted loop playsinline>
+                <source src="${media}" type="video/mp4">
+              </video>`
+            : `<img src="${media}" alt="${p.title}" loading="lazy" />`
+        }
+        <span class="card-count">${p.images.length} img</span>
+        <div class="card-gallery-strip">${thumbsHTML}</div>
+      </div>
+      <div class="card-body">
+        <p class="card-category">${p.category}</p>
+        <h3 class="card-title">${p.title}</h3>
+        <p class="card-desc">${p.desc}</p>
+        <div class="card-tags">${p.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      </div>
+    </div>`;
+});
+
+/* Gallery items */
+const gg = document.getElementById('gallery-grid');
+
+GALLERY.forEach((g, i) => {
+  const isVideo = g.src.match(/\.(mp4|webm|ogg)$/i);
+
+  gg.innerHTML += `
+    <div class="gallery-item" data-gidx="${i}" tabindex="0" role="button" aria-label="Abrir ${g.title}">
+      ${
+        isVideo
+          ? `<video autoplay muted loop playsinline>
+               <source src="${g.src}" type="video/mp4">
+             </video>`
+          : `<img src="${g.src}" alt="${g.title}" loading="lazy" />`
+      }
+      <div class="gallery-overlay">
+        <div class="gallery-overlay-title">${g.title}</div>
+        <div class="gallery-overlay-desc">${g.date}</div>
+      </div>
+    </div>`;
+});
+
+// ╔══════════════════════════════════════════════════════╗
+// ║  MODALES                                             ║
+// ╚══════════════════════════════════════════════════════╝
+
+/* Portfolio modal */
+const pm = document.getElementById('portfolio-modal');
+let currentPM = null;
+function prevPMImage() {
+  if (!currentPM) return;
+
+  const p = PORTFOLIO[currentPM.idx];
+
+  currentPM.imgIdx =
+    (currentPM.imgIdx - 1 + p.images.length) % p.images.length;
+
+  renderPMImages(p, currentPM.imgIdx);
+}
+
+function nextPMImage() {
+  if (!currentPM) return;
+
+  const p = PORTFOLIO[currentPM.idx];
+
+  currentPM.imgIdx =
+    (currentPM.imgIdx + 1) % p.images.length;
+
+  renderPMImages(p, currentPM.imgIdx);
+}
+
+function openPortfolioModal(idx) {
+  const p = PORTFOLIO[idx];
+  currentPM = { idx, imgIdx: 0 };
+  document.getElementById('pm-cat').textContent = p.category;
+  document.getElementById('pm-title').textContent = p.title;
+  document.getElementById('pm-desc').textContent = p.fullDesc;
+  const tagsEl = document.getElementById('pm-tags');
+  tagsEl.innerHTML = p.tags.map(t=>`<span class="tag">${t}</span>`).join('');
+  buildPMThumbs(p);
+  renderPMImages(p, 0);
+  pm.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function buildPMThumbs(p) {
+  const thumbsEl = document.getElementById('pm-thumbs');
+
+  const playIcon = `<svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><polygon points="2,1 9,5 2,9"/></svg>`;
+  const imgIcon  = `<svg viewBox="0 0 10 10" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="8" height="8" rx="1" fill="none" stroke="#fff" stroke-width="1"/><circle cx="3.5" cy="3.5" r="1"/><polyline points="1,7 3.5,4.5 5.5,6.5 7,5.5 9,7" fill="none" stroke="#fff" stroke-width="1" stroke-linejoin="round"/></svg>`;
+
+  thumbsEl.innerHTML = p.images.map((url, i) => {
+    const thumbVideo = url.match(/\.(mp4|webm|ogg)$/i);
+    return `
+      <div class="pm-thumb" data-ii="${i}">
+        ${
+          thumbVideo
+            ? `<video muted playsinline preload="metadata"><source src="${url}" type="video/mp4"></video>`
+            : `<img src="${url}" alt="" loading="lazy" />`
+        }
+        <span class="pm-thumb-badge">${thumbVideo ? playIcon : imgIcon}</span>
+      </div>
+    `;
+  }).join('');
+
+  thumbsEl.querySelectorAll('.pm-thumb').forEach(th => {
+    th.addEventListener('click', () => {
+      const ii = +th.dataset.ii;
+      currentPM.imgIdx = ii;
+      renderPMImages(PORTFOLIO[currentPM.idx], ii);
+    });
+  });
+}
+
+function renderPMImages(p, activeIdx) {
+  const media = p.images[activeIdx];
+  const isVideo = media.match(/\.(mp4|webm|ogg)$/i);
+
+  const mainMedia = document.getElementById('pm-main-media');
+
+  mainMedia.innerHTML = isVideo
+    ? `
+      <video controls autoplay loop>
+        <source src="${media}" type="video/mp4">
+      </video>
+    `
+    : `
+      <img src="${media}" alt="${p.title}" />
+    `;
+
+  const thumbsEl = document.getElementById('pm-thumbs');
+  thumbsEl.querySelectorAll('.pm-thumb').forEach((th, i) => {
+    th.classList.toggle('active', i === activeIdx);
+  });
+
+  const prevBtn = document.getElementById('pm-prev');
+  const nextBtn = document.getElementById('pm-next');
+  const showNav = p.images.length > 1;
+  prevBtn.classList.toggle('hidden', !showNav);
+  nextBtn.classList.toggle('hidden', !showNav);
+}
+
+function closePortfolioModal() {
+  const videos = pm.querySelectorAll('video');
+
+  videos.forEach(video => {
+    video.pause();
+    video.currentTime = 0;
+  });
+
+  document.getElementById('pm-main-media').innerHTML = '';
+  document.getElementById('pm-thumbs').innerHTML = '';
+
+  pm.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('pm-close').addEventListener('click', closePortfolioModal);
+
+document.getElementById('pm-prev').addEventListener('click', prevPMImage);
+document.getElementById('pm-next').addEventListener('click', nextPMImage);
+
+pm.addEventListener('click', e => { if (e.target === pm) closePortfolioModal(); });
+
+document.getElementById('portfolio-grid').addEventListener('click', e => {
+  const card = e.target.closest('.portfolio-card');
+  if (card) openPortfolioModal(+card.dataset.idx);
+});
+document.getElementById('portfolio-grid').addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    const card = e.target.closest('.portfolio-card');
+    if (card) { e.preventDefault(); openPortfolioModal(+card.dataset.idx); }
+  }
+});
+
+/* Gallery lightbox */
+const lb = document.getElementById('lightbox');
+
+function openLightbox(idx) {
+  const g = GALLERY[idx];
+  const isVideo = g.src.match(/\.(mp4|webm|ogg)$/i);
+
+  const mediaWrap = document.getElementById('lb-media-wrap');
+
+  mediaWrap.innerHTML = isVideo
+    ? `
+      <video controls autoplay loop style="width:100%;max-height:70vh;">
+        <source src="${g.src}" type="video/mp4">
+      </video>
+    `
+    : `
+      <img src="${g.src}" alt="${g.title}" />
+    `;
+
+  document.getElementById('lb-title').textContent = g.title;
+  document.getElementById('lb-date').textContent = g.date;
+  document.getElementById('lb-desc').textContent = g.desc;
+
+  lb.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  const videos = lb.querySelectorAll('video');
+
+  videos.forEach(video => {
+    video.pause();
+    video.currentTime = 0;
+  });
+
+  document.getElementById('lb-media-wrap').innerHTML = '';
+
+  lb.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+document.getElementById('lb-close').addEventListener('click', closeLightbox);
+lb.addEventListener('click', e => { if (e.target === lb) closeLightbox(); });
+
+document.getElementById('gallery-grid').addEventListener('click', e => {
+  const item = e.target.closest('.gallery-item');
+  if (item) openLightbox(+item.dataset.gidx);
+});
+document.getElementById('gallery-grid').addEventListener('keydown', e => {
+  if (e.key === 'Enter' || e.key === ' ') {
+    const item = e.target.closest('.gallery-item');
+    if (item) { e.preventDefault(); openLightbox(+item.dataset.gidx); }
+  }
+});
+
+/* ESC key closes any modal */
+document.addEventListener('keydown', e => {
+  if (pm.classList.contains('open')) {
+  if (e.key === 'ArrowLeft') prevPMImage();
+  if (e.key === 'ArrowRight') nextPMImage();
+}
+  if (e.key === 'Escape') {
+    closePortfolioModal();
+    closeLightbox();
+  }
+});
+
+/* Nav active link on scroll */
+const sections = ['hero','portfolio','gallery','about'];
+const navLinks = document.querySelectorAll('nav a[href^="#"]');
+const io = new IntersectionObserver(entries => {
+  entries.forEach(en => {
+    if (en.isIntersecting) {
+      navLinks.forEach(l => {
+        l.classList.toggle('active', l.getAttribute('href') === '#' + en.target.id);
+      });
+    }
+  });
+}, { rootMargin: '-40% 0px -55% 0px' });
+sections.forEach(id => { const el = document.getElementById(id); if(el) io.observe(el); });
+</script>
+</body>
+</html>
