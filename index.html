@@ -454,6 +454,27 @@
     }
     .lb-close:hover { border-color: var(--accent); }
 
+    /* ─── Zoom lens (estilo Amazon) ──────────────────────── */
+    .zoom-lens {
+      position: absolute;
+      border: 1px solid var(--accent);
+      background: rgba(124,110,245,0.15);
+      pointer-events: none;
+      display: none;
+      z-index: 50;
+    }
+    .zoom-result {
+      position: fixed;
+      display: none;
+      pointer-events: none;
+      z-index: 500;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background-color: var(--surface);
+      background-repeat: no-repeat;
+      box-shadow: 0 20px 60px rgba(0,0,0,.55);
+    }
+
     /* ─── Portfolio modal ────────────────────────────────── */
     #portfolio-modal {
       display: none;
@@ -1247,6 +1268,124 @@ document.addEventListener('keydown', e => {
     closePortfolioModal();
     closeLightbox();
   }
+});
+
+// ╔══════════════════════════════════════════════════════╗
+// ║  ZOOM ESTILO AMAZON (lente + panel ampliado)         ║
+// ╚══════════════════════════════════════════════════════╝
+function initImageZoom(container, imgSelector, opts = {}) {
+  if (!container) return;
+  // Se desactiva en dispositivos sin hover real (táctiles)
+  if (!window.matchMedia('(hover: hover)').matches) return;
+
+  const zoomFactor    = opts.zoomFactor    || 2.2;
+  const lensRatio     = opts.lensRatio     || 0.35; // tamaño del lente relativo a la imagen
+  const resultSize     = opts.resultSize    || 320;
+  const minLensPx      = opts.minLensPx     || 60;
+
+  let lens = null;
+  let result = null;
+  let activeImg = null;
+
+  function buildOverlays() {
+    lens = document.createElement('div');
+    lens.className = 'zoom-lens';
+    document.body.appendChild(lens);
+
+    result = document.createElement('div');
+    result.className = 'zoom-result';
+    document.body.appendChild(result);
+  }
+
+  function destroyOverlays() {
+    if (lens) { lens.remove(); lens = null; }
+    if (result) { result.remove(); result = null; }
+    activeImg = null;
+  }
+
+  function placeResultPanel(imgRect) {
+    let left = imgRect.right + 16;
+    let top  = imgRect.top;
+
+    if (left + resultSize > window.innerWidth - 8) {
+      left = imgRect.left - resultSize - 16;
+    }
+    if (left < 8) {
+      left = Math.max(8, Math.min(window.innerWidth - resultSize - 8, imgRect.left));
+      top  = imgRect.bottom + 16;
+    }
+    if (top + resultSize > window.innerHeight - 8) {
+      top = Math.max(8, window.innerHeight - resultSize - 8);
+    }
+    if (top < 8) top = 8;
+
+    result.style.left   = left + 'px';
+    result.style.top    = top + 'px';
+    result.style.width  = resultSize + 'px';
+    result.style.height = resultSize + 'px';
+  }
+
+  container.addEventListener('mouseover', e => {
+    const img = e.target.closest(imgSelector);
+    if (!img || img === activeImg) return;
+    activeImg = img;
+    buildOverlays();
+    result.style.backgroundImage = `url("${img.currentSrc || img.src}")`;
+    result.style.display = 'block';
+    lens.style.display = 'block';
+  });
+
+  container.addEventListener('mousemove', e => {
+    const img = e.target.closest(imgSelector);
+    if (!img || img !== activeImg || !lens) return;
+
+    const rect = img.getBoundingClientRect();
+    const lensW = Math.max(minLensPx, rect.width  * lensRatio);
+    const lensH = Math.max(minLensPx, rect.height * lensRatio);
+
+    let x = e.clientX - rect.left;
+    let y = e.clientY - rect.top;
+
+    let lensX = x - lensW / 2;
+    let lensY = y - lensH / 2;
+    lensX = Math.max(0, Math.min(lensX, rect.width  - lensW));
+    lensY = Math.max(0, Math.min(lensY, rect.height - lensH));
+
+    lens.style.width  = lensW + 'px';
+    lens.style.height = lensH + 'px';
+    lens.style.left   = (rect.left + lensX) + 'px';
+    lens.style.top    = (rect.top  + lensY) + 'px';
+
+    placeResultPanel(rect);
+
+    const bgW = rect.width  * zoomFactor;
+    const bgH = rect.height * zoomFactor;
+    result.style.backgroundSize = `${bgW}px ${bgH}px`;
+    result.style.backgroundPosition = `${-(lensX * zoomFactor)}px ${-(lensY * zoomFactor)}px`;
+  });
+
+  container.addEventListener('mouseout', e => {
+    if (!activeImg) return;
+    const leavingImg = e.target.closest(imgSelector) === activeImg;
+    const goingInsideImg = e.relatedTarget && activeImg.contains(e.relatedTarget);
+    if (leavingImg && !goingInsideImg) {
+      destroyOverlays();
+    }
+  });
+}
+
+// Proyectos: zoom solo en la imagen grande del modal (al hacer click en un proyecto)
+initImageZoom(document.getElementById('pm-main-media'), 'img', {
+  zoomFactor: 2.2,
+  lensRatio: 0.35,
+  resultSize: 320
+});
+
+// Galería: zoom sobre la imagen abierta en el lightbox
+initImageZoom(document.getElementById('lb-media-wrap'), 'img', {
+  zoomFactor: 2.4,
+  lensRatio: 0.3,
+  resultSize: 340
 });
 
 /* Nav active link on scroll */
