@@ -2,15 +2,12 @@ import { defineConfig } from 'vite'
 import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
-  base: '/Portfolio/',
-
+  base: '/Portfolio/',   // ← esto es lo que falta
   plugins: [tailwindcss()],
-
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
     sourcemap: true,
-
     rollupOptions: {
       output: {
         manualChunks: {
@@ -19,7 +16,6 @@ export default defineConfig({
       }
     }
   },
-
   server: {
     port: 3000,
     open: true
