@@ -3,18 +3,17 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main          # cambia a 'master' si ese es tu branch principal
-  workflow_dispatch:  # permite lanzarlo manualmente desde la UI de GitHub
+      - main
+  workflow_dispatch:
 
 permissions:
   contents: read
   pages: write
   id-token: write
 
-# Evita deploys simultáneos; cancela el anterior si hay uno en cola
 concurrency:
   group: pages
-  cancel-in-progress: true
+  cancel-in-progress: false   # ← debe ser false para Pages, GitHub no permite cancelar un deploy activo
 
 jobs:
   build:
@@ -26,7 +25,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22        # ← 22 en vez de 20 (20 está deprecado)
           cache: npm
 
       - name: Install dependencies
@@ -38,11 +37,14 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist   # carpeta de salida de Vite
+          path: dist
 
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    concurrency:                  # ← concurrency también en el job de deploy
+      group: pages
+      cancel-in-progress: false
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
