@@ -28,27 +28,47 @@ button{font-family:inherit;cursor:pointer;background:none;border:none}
 ::-webkit-scrollbar-thumb{background:var(--accent);border-radius:3px}
 ::selection{background:var(--accent);color:#fff}
 
+/* ── PARTICLES ── */
+#fx{position:fixed;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+main,#footer{position:relative;z-index:1}
+
 /* ── NAV ── */
-#nav{position:fixed;top:0;left:0;right:0;z-index:50;background:rgba(10,10,12,.6);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06)}
-.nav-inner{display:flex;align-items:center;gap:2rem;padding:1rem 1.5rem;max-width:1280px;margin:0 auto;width:100%}
-.nav-home{width:36px;height:36px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:8px;display:grid;place-items:center;transition:border-color .2s;flex-shrink:0}
-.nav-home:hover{border-color:var(--accent)}
-.nav-home svg{width:16px;height:16px;fill:currentColor}
-.nav-dot{width:6px;height:6px;border-radius:50%;background:rgba(124,110,245,.6);flex-shrink:0}
-.nav-links{display:flex;gap:1.5rem}
-.nav-link{font-family:'Space Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);transition:color .2s}
-.nav-link:hover,.nav-link.active{color:var(--text)}
+#nav{position:fixed;top:calc(.75rem + env(safe-area-inset-top,0px));left:50%;transform:translateX(-50%);width:min(1100px,calc(100% - 1.5rem));z-index:50;background:rgba(14,14,18,.5);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);border:1px solid rgba(255,255,255,.08);border-radius:16px;overflow:hidden;transition:background .3s,border-color .3s,box-shadow .3s}
+#nav.scrolled{background:rgba(10,10,14,.82);border-color:rgba(124,110,245,.28);box-shadow:0 12px 40px rgba(0,0,0,.45),0 0 32px rgba(124,110,245,.08)}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.55rem .6rem .55rem .65rem}
+.nav-brand{display:flex;align-items:center;gap:.65rem;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;letter-spacing:-.01em;flex-shrink:0}
+.nav-logo{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-weight:800;font-size:.95rem;box-shadow:0 0 18px rgba(124,110,245,.45);transition:transform .3s}
+.nav-brand:hover .nav-logo{transform:rotate(-8deg) scale(1.06)}
+.nav-links{display:flex;gap:.2rem}
+.nav-link{position:relative;padding:.5rem .8rem;border-radius:8px;font-family:'Space Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);transition:color .2s,background .2s}
+.nav-link::after{content:"";position:absolute;left:.8rem;right:.8rem;bottom:.3rem;height:1px;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transform-origin:left;transition:transform .25s}
+.nav-link:hover{color:var(--text);background:rgba(255,255,255,.04)}
+.nav-link:hover::after,.nav-link.active::after{transform:scaleX(1)}
+.nav-link.active{color:var(--text)}
+.nav-cta{flex-shrink:0;padding:.55rem 1rem;border-radius:10px;border:1px solid rgba(124,110,245,.45);background:rgba(124,110,245,.12);color:#fff;font-family:'Space Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;transition:background .2s,box-shadow .2s,border-color .2s}
+.nav-cta:hover{background:var(--accent);border-color:var(--accent);box-shadow:0 0 22px rgba(124,110,245,.5)}
+.nav-progress{position:absolute;left:0;bottom:0;height:2px;width:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));transform:scaleX(0);transform-origin:left;will-change:transform}
 
 /* ── HERO ── */
-#hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:8rem 1.5rem 5rem;position:relative;overflow:hidden}
-.hero-glow{position:absolute;border-radius:50%;pointer-events:none}
-.hero-glow-1{top:25%;right:25%;width:600px;height:600px;background:rgba(124,110,245,.1);filter:blur(120px)}
-.hero-glow-2{bottom:25%;left:25%;width:400px;height:400px;background:rgba(196,110,245,.07);filter:blur(100px)}
+#hero{min-height:100vh;min-height:100svh;display:flex;flex-direction:column;justify-content:center;padding:8rem 1.5rem 6rem;position:relative;overflow:hidden;isolation:isolate}
+.hero-glow{position:absolute;border-radius:50%;pointer-events:none;z-index:-1;animation:drift 14s ease-in-out infinite alternate}
+.hero-glow-1{top:15%;right:15%;width:620px;height:620px;background:rgba(124,110,245,.16);filter:blur(120px)}
+.hero-glow-2{bottom:10%;left:10%;width:440px;height:440px;background:rgba(196,110,245,.11);filter:blur(100px);animation-delay:-5s}
+.hero-glow-3{top:45%;left:45%;width:300px;height:300px;background:rgba(90,120,255,.08);filter:blur(90px);animation-delay:-9s}
 .hero-content{position:relative;z-index:1;max-width:1280px;margin:0 auto;width:100%}
-#hero-title{font-family:'Syne',sans-serif;font-size:clamp(3.5rem,9vw,8rem);font-weight:800;line-height:.95;letter-spacing:-.02em;background:linear-gradient(135deg,#fff,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent;opacity:0;transform:translateY(60px) scale(.95)}
-#hero-sub{font-family:'Space Mono',monospace;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:1.25rem 0 2rem;opacity:0;transform:translateY(30px)}
+.hero-anim{opacity:0;transform:translateY(28px)}
+.pulse{width:7px;height:7px;border-radius:50%;background:var(--accent2);animation:pulse 2s infinite}
+#hero-title{font-family:'Syne',sans-serif;font-size:clamp(3.5rem,11vw,9rem);font-weight:800;line-height:.95;padding-bottom:.08em;letter-spacing:-.03em;background:linear-gradient(110deg,#fff 0%,#d8d2ff 22%,var(--accent) 48%,var(--accent2) 74%,#fff 100%);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;filter:drop-shadow(0 0 38px rgba(124,110,245,.35));animation:shine 8s linear infinite}
+#hero-sub{font-family:'Space Mono',monospace;font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin:1.4rem 0 2.2rem}
 #hero-sub .dot{color:var(--accent)}
-#hero-btns{display:flex;gap:.75rem;flex-wrap:wrap;opacity:0;transform:translateY(20px)}
+#hero-btns{display:flex;gap:.75rem;flex-wrap:wrap}
+.hero-stats{display:flex;gap:2.5rem;flex-wrap:wrap;margin-top:3.25rem;padding-top:1.5rem;border-top:1px solid var(--border);max-width:30rem}
+.stat b{display:block;font-family:'Syne',sans-serif;font-size:1.9rem;font-weight:700;color:#fff;line-height:1}
+.stat span{display:block;margin-top:.4rem;font-family:'Space Mono',monospace;font-size:.62rem;letter-spacing:.15em;text-transform:uppercase;color:var(--muted)}
+.scroll-cue{position:absolute;bottom:1.75rem;left:50%;margin-left:-11px;width:22px;height:36px;border:1px solid rgba(255,255,255,.2);border-radius:12px;transition:border-color .2s}
+.scroll-cue:hover{border-color:var(--accent)}
+.scroll-cue::after{content:"";position:absolute;top:7px;left:50%;margin-left:-2px;width:4px;height:7px;border-radius:2px;background:var(--accent2);animation:wheel 1.8s ease-in-out infinite}
+@media(max-height:640px){.scroll-cue{display:none}}
 
 /* ── BUTTONS ── */
 .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.625rem 1.25rem;border-radius:8px;font-family:'Space Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;cursor:pointer;transition:all .2s;border:1px solid transparent}
@@ -58,7 +78,7 @@ button{font-family:inherit;cursor:pointer;background:none;border:none}
 .btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
 
 /* ── SECTIONS ── */
-.section{padding:7rem 1.5rem;max-width:1280px;margin:0 auto}
+.section{padding:7rem 1.5rem;max-width:1280px;margin:0 auto;scroll-margin-top:4rem}
 .section-label{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:.75rem}
 .section-title{font-family:'Syne',sans-serif;font-size:clamp(2rem,4vw,3.2rem);font-weight:700;line-height:1.1;margin-bottom:.75rem}
 .section-desc{color:var(--muted);max-width:36rem;margin-bottom:3rem;font-size:.95rem;line-height:1.7}
@@ -160,27 +180,98 @@ button{font-family:inherit;cursor:pointer;background:none;border:none}
 .zoom-lens{position:fixed;pointer-events:none;display:none;z-index:500;border:1px solid var(--accent);background:rgba(124,110,245,.15)}
 .zoom-result{position:fixed;pointer-events:none;display:none;z-index:501;border:1px solid rgba(255,255,255,.08);border-radius:8px;background-color:var(--surface);background-repeat:no-repeat;box-shadow:0 20px 60px rgba(0,0,0,.55)}
 
+/* ── CONTACT SECTION ── */
+.contact-grid{display:grid;grid-template-columns:1fr;gap:1.25rem;margin-bottom:2rem}
+.contact-card{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:12px;padding:1.5rem;display:flex;flex-direction:column;gap:1rem;transition:all .3s ease;cursor:pointer;position:relative;overflow:hidden}
+.contact-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--accent2),transparent);opacity:0;transition:opacity .3s}
+.contact-card:hover{transform:translateY(-6px);border-color:rgba(196,110,245,.4);box-shadow:0 16px 36px rgba(124,110,245,.12)}
+.contact-card:hover::before{opacity:1}
+.contact-card:focus{outline:2px solid var(--accent);outline-offset:2px}
+.contact-card-top{display:flex;align-items:center;justify-content:space-between}
+.contact-icon-wrap{width:46px;height:46px;border-radius:10px;background:rgba(124,110,245,.1);border:1px solid rgba(124,110,245,.2);display:grid;place-items:center;color:var(--accent2);transition:all .25s}
+.contact-card:hover .contact-icon-wrap{background:var(--accent);color:#fff;box-shadow:0 0 16px rgba(196,110,245,.5);transform:scale(1.05)}
+.contact-icon-wrap svg{width:22px;height:22px}
+.contact-badge{font-family:'Space Mono',monospace;font-size:.65rem;color:var(--muted);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);padding:.2rem .5rem;border-radius:4px}
+.contact-card-title{font-size:1.15rem;font-weight:700;color:var(--text);transition:color .2s}
+.contact-card:hover .contact-card-title{color:var(--accent2)}
+.contact-card-handle{font-family:'Space Mono',monospace;font-size:.75rem;color:var(--accent);margin-top:.2rem}
+.contact-card-desc{font-size:.875rem;color:var(--muted);line-height:1.6;flex-grow:1}
+.contact-card-action{display:flex;align-items:center;justify-content:space-between;padding-top:.75rem;border-top:1px solid rgba(255,255,255,.05);font-family:'Space Mono',monospace;font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);transition:color .2s}
+.contact-card:hover .contact-card-action{color:var(--text)}
+.contact-arrow{transition:transform .2s}
+.contact-card:hover .contact-arrow{transform:translateX(4px)}
+.contact-modal-trigger-wrap{display:flex;align-items:center;justify-content:flex-start;margin-top:1.5rem}
+
+/* ── CONTACT MODAL (SMALL WINDOW) ── */
+#cm-overlay{position:fixed;inset:0;z-index:220;display:none;align-items:center;justify-content:center;background:rgba(7,7,9,.82);backdrop-filter:blur(20px);padding:1.5rem}
+#cm-overlay.open{display:flex}
+.cm-window{background:var(--surface);border:1px solid rgba(196,110,245,.28);border-radius:16px;max-width:420px;width:100%;padding:1.75rem;position:relative;box-shadow:0 24px 60px rgba(0,0,0,.7),0 0 35px rgba(124,110,245,.15);animation:cmPop .25s cubic-bezier(.16,1,.3,1)}
+@keyframes cmPop{from{opacity:0;transform:scale(.94) translateY(12px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.cm-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1rem}
+.cm-tag{font-family:'Space Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.15em;color:var(--accent2);display:block;margin-bottom:.25rem}
+.cm-title{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:700;color:var(--text)}
+.cm-close{width:36px;height:36px;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:8px;display:grid;place-items:center;cursor:pointer;color:var(--muted);font-size:1rem;transition:all .2s;flex-shrink:0}
+.cm-close:hover{border-color:var(--accent2);color:#fff;background:rgba(196,110,245,.15);transform:scale(1.05)}
+.cm-desc{font-size:.85rem;color:var(--muted);line-height:1.5;margin-bottom:1.25rem}
+.cm-list{display:flex;flex-direction:column;gap:.75rem;margin-bottom:1.5rem}
+.cm-item{display:flex;align-items:center;gap:.9rem;padding:.85rem 1rem;border-radius:10px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.06);transition:all .2s;cursor:pointer;text-decoration:none;color:inherit}
+.cm-item:hover{border-color:rgba(196,110,245,.4);background:rgba(124,110,245,.08);transform:translateX(4px)}
+.cm-item-icon{width:40px;height:40px;border-radius:8px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);display:grid;place-items:center;color:var(--accent2);flex-shrink:0;transition:all .2s}
+.cm-item:hover .cm-item-icon{background:var(--accent);color:#fff;box-shadow:0 0 12px rgba(124,110,245,.4)}
+.cm-item-icon svg{width:20px;height:20px}
+.cm-item-info{flex:1;min-width:0}
+.cm-item-name{font-size:.9rem;font-weight:600;color:var(--text)}
+.cm-item-handle{font-family:'Space Mono',monospace;font-size:.7rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cm-item-btn{font-family:'Space Mono',monospace;font-size:.65rem;text-transform:uppercase;letter-spacing:.08em;color:var(--accent);display:inline-flex;align-items:center;gap:.3rem;padding:.35rem .65rem;border-radius:6px;background:rgba(124,110,245,.1);border:1px solid rgba(124,110,245,.2);transition:all .2s;white-space:nowrap}
+.cm-item:hover .cm-item-btn{background:var(--accent2);color:#fff;border-color:var(--accent2)}
+.cm-item-btn.copied{background:#10b981!important;border-color:#10b981!important;color:#fff!important}
+.cm-status{display:flex;align-items:center;justify-content:center;gap:.5rem;font-family:'Space Mono',monospace;font-size:.68rem;color:var(--muted);padding-top:1rem;border-top:1px solid rgba(255,255,255,.06)}
+.cm-pulse-dot{width:8px;height:8px;border-radius:50%;background:#10b981;box-shadow:0 0 8px #10b981;animation:pulseDot 2s infinite}
+@keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.85)}}
+
+/* Toast for copy notifications */
+.cm-toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:rgba(20,20,23,.95);border:1px solid var(--accent);color:#fff;padding:.6rem 1.2rem;border-radius:8px;font-family:'Space Mono',monospace;font-size:.75rem;box-shadow:0 10px 30px rgba(0,0,0,.5),0 0 15px rgba(124,110,245,.3);pointer-events:none;opacity:0;transition:all .25s cubic-bezier(.16,1,.3,1);z-index:300}
+.cm-toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
 /* ── ANIMATIONS ── */
 @keyframes fadeIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
+@keyframes shine{to{background-position:200% center}}
+@keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(50px,-40px) scale(1.15)}}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(196,110,245,.6)}70%{box-shadow:0 0 0 9px rgba(196,110,245,0)}100%{box-shadow:0 0 0 0 rgba(196,110,245,0)}}
+@keyframes wheel{0%{opacity:0;transform:translateY(0)}30%{opacity:1}100%{opacity:0;transform:translateY(12px)}}
 .hero-anim{transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1)}
 .hero-anim.go{opacity:1!important;transform:none!important}
 
 /* ── RESPONSIVE ── */
 @media(min-width:768px){
-  #hero,.section,.nav-inner,#footer{padding-left:3rem;padding-right:3rem}
+  #hero,.section,#footer{padding-left:3rem;padding-right:3rem}
   .divider{margin:0 3rem}
   .about-grid{grid-template-columns:1fr 1fr}
   .portfolio-grid{grid-template-columns:1fr 1fr}
   .gallery-grid{columns:2}
+  .contact-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(min-width:1024px){
+  .contact-grid{grid-template-columns:repeat(4,1fr)}
+}
+@media(max-width:640px){
+  .nav-name{display:none}
+  .nav-inner{gap:.4rem;padding-right:.5rem}
+  .nav-links{gap:0}
+  .nav-link{padding:.5rem .4rem;font-size:.58rem;letter-spacing:.03em;white-space:nowrap}
+  .nav-link::after{left:.4rem;right:.4rem}
+  .nav-cta{padding:.5rem .6rem;font-size:.58rem;letter-spacing:.05em}
+  .hero-stats{gap:1.75rem}
 }
 @media(min-width:1024px){
   .portfolio-grid{grid-template-columns:1fr 1fr 1fr}
   .gallery-grid{columns:3}
 }
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}.hero-glow,#hero-title,.pulse,.scroll-cue::after{animation:none!important}}
 </style>
 </head>
 <body>
+  <canvas id="fx" aria-hidden="true"></canvas>
   <nav id="nav"></nav>
   <main>
     <section id="hero"></section>
@@ -189,11 +280,17 @@ button{font-family:inherit;cursor:pointer;background:none;border:none}
     <section id="portfolio" class="section animate-in"></section>
     <div class="divider"></div>
     <section id="gallery" class="section animate-in"></section>
+    <div class="divider"></div>
+    <section id="contact" class="section animate-in"></section>
   </main>
   <footer id="footer"></footer>
 
   <!-- Portfolio Modal -->
   <div id="pm-overlay" role="dialog" aria-modal="true" aria-label="Proyecto"></div>
+
+  <!-- Contact Modal -->
+  <div id="cm-overlay" role="dialog" aria-modal="true" aria-label="Contacto"></div>
+  <div id="cm-toast" class="cm-toast"></div>
 
   <!-- Lightbox -->
   <div id="lb-overlay" role="dialog" aria-modal="true" aria-label="Imagen"></div>
@@ -203,6 +300,50 @@ button{font-family:inherit;cursor:pointer;background:none;border:none}
    DATA
 ══════════════════════════════════════════ */
 const SITE = { name:'PanBimboX', year:2026, desc:'Modelos 3D · Pixel Art · Config & Traducción' };
+
+/* ✏️ EDITA AQUÍ tus datos de contacto (usuarios y enlaces) */
+const CONTACTS = [
+  {
+    id: 'discord',
+    name: 'Discord',
+    handle: '@panbimbo_x',
+    desc: 'Contacto directo para presupuestos, comisiones o consultas de proyectos.',
+    badge: 'Chat Directo',
+    copyValue: 'panbimbo_x',
+    actionLabel: 'Copiar usuario',
+    icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994.021-.041.001-.09-.041-.106a13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.929 1.793 8.18 1.793 12.061 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.894.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.028zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.096 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>`
+  },
+  {
+    id: 'x',
+    name: 'X.com',
+    handle: '@PanBimboX',
+    desc: 'Publicaciones sobre avances de desarrollo, proyectos y novedades.',
+    badge: 'Red Social',
+    url: 'https://x.com/PanBimboX',
+    actionLabel: 'Ver perfil',
+    icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>`
+  },
+  {
+    id: 'youtube',
+    name: 'YouTube',
+    handle: '@BimboBigBoy',
+    desc: 'Showcases de servidores, demostraciones técnicas y animaciones.',
+    badge: 'Contenido',
+    url: 'https://youtube.com/@BimboBigBoy',
+    actionLabel: 'Ver canal',
+    icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`
+  },
+  {
+    id: 'github',
+    name: 'GitHub',
+    handle: '@PanBimboBoy',
+    desc: 'Código, configuraciones y recursos de mis proyectos de desarrollo.',
+    badge: 'Código',
+    url: 'https://github.com/PanBimboBoy',
+    actionLabel: 'Ver perfil',
+    icon: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>`
+  }
+];
 
 const SKILLS = [
   {name:'Modelado 3D',level:90},{name:'Pixel Art',level:85},
@@ -353,16 +494,18 @@ function initZoom(container, imgSel, {zoomFactor=2.2,lensRatio=.35,resultSize=32
 function renderNav() {
   $('#nav').innerHTML = `
     <div class="nav-inner">
-      <a href="#hero" class="nav-home" aria-label="Inicio">
-        <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+      <a href="#hero" class="nav-brand" aria-label="Inicio">
+        <span class="nav-logo">${SITE.name[0]}</span>
+        <span class="nav-name">${SITE.name}</span>
       </a>
-      <div class="nav-dot"></div>
       <nav class="nav-links">
         <a href="#about"     class="nav-link" data-sec="about">Sobre mí</a>
         <a href="#portfolio" class="nav-link" data-sec="portfolio">Portafolio</a>
         <a href="#gallery"   class="nav-link" data-sec="gallery">Galería</a>
       </nav>
-    </div>`;
+      <a href="#contact" class="nav-cta">Contacto</a>
+    </div>
+    <div class="nav-progress" id="nav-progress"></div>`;
 
   const links = document.querySelectorAll('.nav-link');
   const obs = new IntersectionObserver(entries => {
@@ -370,7 +513,17 @@ function renderNav() {
       if (e.isIntersecting) links.forEach(l => l.classList.toggle('active', l.dataset.sec===e.target.id));
     });
   },{rootMargin:'-40% 0px -55% 0px'});
-  ['hero','portfolio','gallery','about'].forEach(id => { const el=document.getElementById(id); if(el) obs.observe(el); });
+  ['hero','about','portfolio','gallery','contact'].forEach(id => { const el=document.getElementById(id); if(el) obs.observe(el); });
+
+  const nav=$('#nav'), bar=$('#nav-progress');
+  const onScroll = () => {
+    nav.classList.toggle('scrolled', window.scrollY>20);
+    const max=document.documentElement.scrollHeight-window.innerHeight;
+    bar.style.transform=`scaleX(${max>0?Math.min(1,window.scrollY/max):0})`;
+  };
+  window.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll, {passive:true});
+  onScroll();
 }
 
 /* ══════════════════════════════════════════
@@ -378,9 +531,11 @@ function renderNav() {
 ══════════════════════════════════════════ */
 function renderHero() {
   const [a,b,c] = SITE.desc.split(' · ');
+  const cats = new Set(PORTFOLIO.map(p=>p.category)).size;
   $('#hero').innerHTML = `
     <div class="hero-glow hero-glow-1"></div>
     <div class="hero-glow hero-glow-2"></div>
+    <div class="hero-glow hero-glow-3"></div>
     <div class="hero-content">
       <h1 id="hero-title" class="hero-anim">${SITE.name}</h1>
       <p id="hero-sub" class="hero-anim">${a} <span class="dot">·</span> ${b} <span class="dot">·</span> ${c}</p>
@@ -388,15 +543,21 @@ function renderHero() {
         <a href="#portfolio" class="btn btn-primary">Ver portafolio</a>
         <a href="#gallery"   class="btn btn-ghost">Galería</a>
         <a href="#about"     class="btn btn-ghost">Sobre Mí</a>
+        <a href="#contact"   class="btn btn-ghost">Contacto</a>
       </div>
-    </div>`;
-  // Stagger animation
-  if (!window.matchMedia('(prefers-reduced-motion:reduce)').matches) {
-    setTimeout(()=>{ $('#hero-title').classList.add('go'); },100);
-    setTimeout(()=>{ $('#hero-sub').classList.add('go'); },320);
-    setTimeout(()=>{ $('#hero-btns').classList.add('go'); },480);
+      <div class="hero-stats hero-anim">
+        <div class="stat"><b>${PORTFOLIO.length}</b><span>Proyectos</span></div>
+        <div class="stat"><b>${GALLERY.length}</b><span>Capturas</span></div>
+        <div class="stat"><b>${cats}</b><span>Categorías</span></div>
+      </div>
+    </div>
+    <a href="#about" class="scroll-cue" aria-label="Bajar"></a>`;
+
+  const items = [...document.querySelectorAll('#hero .hero-anim')];
+  if (window.matchMedia('(prefers-reduced-motion:reduce)').matches) {
+    items.forEach(el=>el.classList.add('go'));
   } else {
-    ['hero-title','hero-sub','hero-btns'].forEach(id=>{ const el=document.getElementById(id); if(el){el.style.opacity=1;el.style.transform='none';} });
+    items.forEach((el,i)=> setTimeout(()=>el.classList.add('go'), 100+i*140));
   }
 }
 
@@ -484,16 +645,264 @@ function renderGallery() {
 }
 
 /* ══════════════════════════════════════════
+   CONTACT
+══════════════════════════════════════════ */
+function renderContact() {
+  $('#contact').innerHTML = `
+    <span class="section-label">Contacto</span>
+    <h2 class="section-title" style="font-family:'Syne',sans-serif">Hablemos de tu Proyecto</h2>
+    <p class="section-desc">¿Tienes una idea en mente, buscas comisiones de servidores, modelado o traducción? Escríbeme directamente o abre la ventana de contacto rápido.</p>
+    <div class="contact-grid">
+      ${CONTACTS.map(c => `
+        <article class="contact-card" data-cid="${c.id}" tabindex="0" role="button" aria-label="Contactar por ${c.name}">
+          <div class="contact-card-top">
+            <div class="contact-icon-wrap">${c.icon}</div>
+            <span class="contact-badge">${c.badge}</span>
+          </div>
+          <div>
+            <h3 class="contact-card-title">${c.name}</h3>
+            <p class="contact-card-handle">${c.handle}</p>
+          </div>
+          <p class="contact-card-desc">${c.desc}</p>
+          <div class="contact-card-action">
+            <span id="cbtn-${c.id}">${c.actionLabel}</span>
+            <span class="contact-arrow">→</span>
+          </div>
+        </article>
+      `).join('')}
+    </div>
+    <div class="contact-modal-trigger-wrap">
+      <button class="btn btn-primary" id="open-cm-btn">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" style="display:inline-block;vertical-align:middle;margin-right:6px">
+          <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.17L4 17.17V4h16v12z"/>
+        </svg>
+        Abrir ventana de contacto
+      </button>
+    </div>`;
+
+  $('#open-cm-btn').onclick = openContactModal;
+
+  $('#contact').querySelectorAll('.contact-card').forEach(card => {
+    const cid = card.dataset.cid;
+    card.addEventListener('click', () => handleContactAction(cid));
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleContactAction(cid);
+      }
+    });
+  });
+}
+
+function showToast(msg) {
+  const toast = $('#cm-toast');
+  if (!toast) return;
+  toast.textContent = msg;
+  toast.classList.add('show');
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(() => toast.classList.remove('show'), 2600);
+}
+
+function copyToClipboard(text, successMsg = '¡Copiado al portapapeles!') {
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => {
+      showToast(successMsg);
+    }).catch(() => {
+      fallbackCopy(text, successMsg);
+    });
+  } else {
+    fallbackCopy(text, successMsg);
+  }
+}
+
+function fallbackCopy(text, successMsg) {
+  const ta = document.createElement('textarea');
+  ta.value = text;
+  ta.style.position = 'fixed';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+  ta.select();
+  try {
+    document.execCommand('copy');
+    showToast(successMsg);
+  } catch (err) {
+    showToast(`Usuario: ${text}`);
+  }
+  ta.remove();
+}
+
+function handleContactAction(id, isModal = false) {
+  const item = CONTACTS.find(c => c.id === id);
+  if (!item) return;
+
+  if (item.id === 'discord') {
+    copyToClipboard(item.copyValue, `¡Usuario copiado! (${item.copyValue})`);
+    const btnId = isModal ? `cm-btn-${id}` : `cbtn-${id}`;
+    const btn = document.getElementById(btnId);
+    if (btn) {
+      const orig = btn.textContent;
+      btn.textContent = '✓ ¡Copiado!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = orig;
+        btn.classList.remove('copied');
+      }, 2000);
+    }
+  } else if (item.url) {
+    window.open(item.url, '_blank', 'noopener,noreferrer');
+  }
+}
+
+function buildContactModalShell() {
+  $('#cm-overlay').innerHTML = `
+    <div class="cm-window" role="document">
+      <div class="cm-header">
+        <div>
+          <span class="cm-tag">Canales Oficiales</span>
+          <h2 class="cm-title">Contacto</h2>
+        </div>
+        <button class="cm-close" id="cm-close" aria-label="Cerrar ventana">✕</button>
+      </div>
+      <p class="cm-desc">Elige una plataforma para comunicarte o seguir mis proyectos:</p>
+      
+      <div class="cm-list">
+        ${CONTACTS.map(c => `
+          <div class="cm-item" data-cid="${c.id}" tabindex="0" role="button" aria-label="${c.name} - ${c.handle}">
+            <div class="cm-item-icon">${c.icon}</div>
+            <div class="cm-item-info">
+              <div class="cm-item-name">${c.name}</div>
+              <div class="cm-item-handle">${c.handle}</div>
+            </div>
+            <span class="cm-item-btn" id="cm-btn-${c.id}">${c.actionLabel}</span>
+          </div>
+        `).join('')}
+      </div>
+
+      <div class="cm-status">
+        <span class="cm-pulse-dot"></span>
+        <span>Disponible para nuevos proyectos y comisiones</span>
+      </div>
+    </div>`;
+
+  $('#cm-close').onclick = closeContactModal;
+  $('#cm-overlay').onclick = e => {
+    if (e.target === $('#cm-overlay')) closeContactModal();
+  };
+
+  $('#cm-overlay').querySelectorAll('.cm-item').forEach(item => {
+    const cid = item.dataset.cid;
+    item.addEventListener('click', () => handleContactAction(cid, true));
+    item.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        handleContactAction(cid, true);
+      }
+    });
+  });
+}
+
+function openContactModal() {
+  $('#cm-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => {
+    const closeBtn = $('#cm-close');
+    if (closeBtn) closeBtn.focus();
+  }, 50);
+}
+
+function closeContactModal() {
+  $('#cm-overlay').classList.remove('open');
+  if (!$('#pm-overlay').classList.contains('open') && !$('#lb-overlay').classList.contains('open')) {
+    document.body.style.overflow = '';
+  }
+}
+
+function initContactModal() {
+  buildContactModalShell();
+}
+
+/* ══════════════════════════════════════════
+   PARTÍCULAS (moradas emisivas)
+══════════════════════════════════════════ */
+function initParticles() {
+  const cv=$('#fx'); if(!cv) return;
+  const ctx=cv.getContext('2d');
+  const reduce=window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+  let W=0,H=0,parts=[],raf=null,last=0;
+
+  // sprite con brillo (núcleo claro + halo morado)
+  const spr=document.createElement('canvas'); spr.width=spr.height=64;
+  const sx=spr.getContext('2d'), g=sx.createRadialGradient(32,32,0,32,32,32);
+  g.addColorStop(0,'rgba(245,235,255,1)');
+  g.addColorStop(.12,'rgba(226,170,255,.95)');
+  g.addColorStop(.35,'rgba(160,110,245,.35)');
+  g.addColorStop(1,'rgba(124,110,245,0)');
+  sx.fillStyle=g; sx.fillRect(0,0,64,64);
+
+  const rnd=(a,b)=>a+Math.random()*(b-a);
+  const make=(anywhere)=>({
+    x:rnd(0,W), y:anywhere?rnd(0,H):H+20,
+    s:rnd(9,22),                 // tamaño en px (pequeñas)
+    vy:-rnd(.12,.45), vx:rnd(-.12,.18),
+    amp:rnd(.1,.4), ph:rnd(0,6.28), tw:rnd(.0008,.0024),
+    a:rnd(.6,1)
+  });
+
+  function resize(){
+    const dpr=Math.min(window.devicePixelRatio||1,2);
+    W=window.innerWidth; H=window.innerHeight;
+    cv.width=W*dpr; cv.height=H*dpr;
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+    const n=Math.max(22,Math.min(70,Math.round(W*H/20000)));
+    while(parts.length<n) parts.push(make(true));
+    parts.length=n;
+    if(reduce) frame(0);
+  }
+
+  function frame(t){
+    const dt=last?Math.min(50,t-last)/16.67:1; last=t;
+    ctx.clearRect(0,0,W,H);
+    ctx.globalCompositeOperation='lighter';
+    for(const p of parts){
+      if(!reduce){
+        p.y+=p.vy*dt;
+        p.x+=(p.vx+Math.sin(t*.0006+p.ph)*p.amp*.5)*dt;
+        if(p.y<-20||p.x<-20||p.x>W+20){ Object.assign(p,make(false)); }
+      }
+      const edge=Math.min(1,p.y/120,(H-p.y)/60+.4);          // se desvanecen arriba
+      const tw=.6+.4*Math.sin(t*p.tw+p.ph);                  // parpadeo
+      ctx.globalAlpha=Math.max(0,p.a*tw*edge);
+      ctx.drawImage(spr,p.x-p.s/2,p.y-p.s/2,p.s,p.s);
+    }
+    ctx.globalAlpha=1; ctx.globalCompositeOperation='source-over';
+    if(!reduce) raf=requestAnimationFrame(frame);
+  }
+
+  resize();
+  window.addEventListener('resize',resize,{passive:true});
+  if(!reduce){
+    raf=requestAnimationFrame(frame);
+    document.addEventListener('visibilitychange',()=>{
+      if(document.hidden){ cancelAnimationFrame(raf); raf=null; }
+      else if(!raf){ last=0; raf=requestAnimationFrame(frame); }
+    });
+  }
+}
+
+/* ══════════════════════════════════════════
    FOOTER
 ══════════════════════════════════════════ */
 function renderFooter() {
   $('#footer').innerHTML = `
     <span>© ${SITE.year} ${SITE.name}</span>
     <div class="footer-links">
-      <a href="#">GitHub</a>
-      <a href="#">Twitter</a>
-      <a href="#">Contacto</a>
+      <a href="https://github.com/PanBimboX" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://x.com/PanBimboX" target="_blank" rel="noopener">Twitter / X</a>
+      <a href="https://youtube.com/@PanBimboX" target="_blank" rel="noopener">YouTube</a>
+      <a href="#contact" id="footer-contact-link">Contacto</a>
     </div>`;
+  const fcl = $('#footer-contact-link');
+  if (fcl) fcl.onclick = e => { e.preventDefault(); openContactModal(); };
 }
 
 /* ══════════════════════════════════════════
@@ -652,7 +1061,14 @@ function initScrollAnimations() {
    KEYBOARD GLOBAL
 ══════════════════════════════════════════ */
 document.addEventListener('keydown', e=>{
-  if (e.key==='Escape') { closePm(); closeLb(); }
+  if (e.key==='Escape') { closePm(); closeLb(); closeContactModal(); }
+  if (e.key==='Tab' && $('#cm-overlay').classList.contains('open')) {
+    const f=[...$('#cm-overlay').querySelectorAll('a[href],button,.cm-item')];
+    if (!f.length) return;
+    const first=f[0], lastEl=f[f.length-1];
+    if (e.shiftKey && document.activeElement===first) { e.preventDefault(); lastEl.focus(); }
+    else if (!e.shiftKey && document.activeElement===lastEl) { e.preventDefault(); first.focus(); }
+  }
   if ($('#pm-overlay').classList.contains('open')) {
     if (e.key==='ArrowLeft') movePm(-1);
     if (e.key==='ArrowRight') movePm(1);
@@ -667,10 +1083,13 @@ renderHero();
 renderAbout();
 renderPortfolio();
 renderGallery();
+renderContact();
 renderFooter();
 initPortfolioModal();
 initLightbox();
+initContactModal();
 initScrollAnimations();
+initParticles();
 </script>
 </body>
 </html>
